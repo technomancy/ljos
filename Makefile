@@ -46,7 +46,7 @@ initramfs: initfs initfs/init
 	cd $(BUILD_PATH)/initfs/ && find . | cpio -o --format=newc > ../initramfs
 
 # Build the iso
-bb.iso: initramfs
+$(BUILD_PATH)/bb.iso: initramfs
 	rm -f $(BUILD_PATH)/bb.iso
 	rm -rf $(BUILD_PATH)/iso/*
 	mkdir -p $(BUILD_PATH)/iso/boot/grub
@@ -56,7 +56,7 @@ bb.iso: initramfs
 
 # Utility targets
 runvm: initramfs
-	qemu-system-x86_64 -m 2048 -kernel $(LINUX_PATH)/vmlinuz -initrd $(BUILD_PATH)/initramfs 
+	qemu-system-x86_64 -curses -m 2048 -kernel $(LINUX_PATH)/vmlinuz -initrd $(BUILD_PATH)/initramfs
 
 # Builds iso and that builds initramfs
 runiso: bb.iso
